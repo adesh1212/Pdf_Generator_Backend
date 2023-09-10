@@ -22,21 +22,21 @@ app.post('/merge-images', upload.array('images'), async (req, res) => {
             try {
                 // console.log(file);
                 let image;
-                if(file.mimetype === 'image/png' ){
+                if (file.mimetype === 'image/png') {
                     image = await pdfDoc.embedPng(file.buffer);
                 }
-                else if(file.mimetype === 'image/jpeg'){
+                else if (file.mimetype === 'image/jpeg') {
                     image = await pdfDoc.embedJpg(file.buffer);
                 }
 
                 const { width, height } = image.scale(0.5);
-                const page = pdfDoc.addPage();
+                const page = pdfDoc.addPage([width+10,height+10]);
 
                 page.drawImage(image, {
-                    x: 50,
-                    y: page.getHeight()/2,
-                    width: page.getWidth()<=width ? width/2 : width,
-                    height: page.getWidth()<=width ? height/2 : height,
+                    x: 5,
+                    y: 5,
+                    width: width,
+                    height: height,
                 });
             } catch (error) {
                 console.error(error);
